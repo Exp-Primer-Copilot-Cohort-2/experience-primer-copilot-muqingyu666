@@ -1,38 +1,11 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import { v4 as uuidv4 } from 'uuid';
+// Create web server
+// Create a web server that listens to requests on port 8080.
+const http = require("http");
 
-const app = express();
-app.use(bodyParser.json());
-
-const comments = [
-    { id: uuidv4(), username: 'Todd', comment: 'lol so funny' },
-    { id: uuidv4(), username: 'Skyler', comment: 'I like turtles' },
-    { id: uuidv4(), username: 'Sk8erBoi', comment: 'Plz delete this post' },
-    { id: uuidv4(), username: 'Ada', comment: 'that is so 2008' },
-];
-
-app.get('/comments', (req, res) => {
-    res.send(comments);
+const server = http.createServer((req, res) => {
+  res.end("Hello world");
 });
 
-app.post('/comments', (req, res) => {
-    const { username, comment } = req.body;
-    const newComment = { id: uuidv4(), username, comment };
-    comments.push(newComment);
-    res.status(201).send(newComment);
-});
-
-app.delete('/comments/:index', (req, res) => {
-    const { index } = req.params;
-    if (index >= 0 && index < comments.length) {
-        const deletedComment = comments.splice(index, 1);
-        res.send(deletedComment);
-    } else {
-        res.status(404).send('Comment not found');
-    }
-});
-
-app.listen(4001, () => {
-    console.log('Server listening on 4001');
+server.listen(8080, () => {
+  console.log("Server listening on port 8080");
 });
